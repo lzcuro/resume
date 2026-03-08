@@ -238,6 +238,41 @@ h1 {
     transform: scale(1.05);
 }
 
+.project-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 12px;
+    padding: 8px 16px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.project-link:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+/* PDF 출력용: 원본 URL을 작게 표시 */
+.project-link--url {
+    background: none;
+    padding: 0;
+    margin-top: 8px;
+    font-size: 0.75rem;
+    color: #718096;
+    font-weight: 400;
+}
+
+.project-link--url:hover {
+    color: #667eea;
+    transform: none;
+}
+
 .language-item {
     display: flex;
     justify-content: space-between;
@@ -254,17 +289,50 @@ h1 {
 
 .achievement-item {
     background: rgba(102, 126, 234, 0.08);
-    padding: 15px;
-    margin-bottom: 10px;
+    padding: 18px 20px;
+    margin-bottom: 14px;
     border-radius: 10px;
-    border-left: 3px solid #667eea;
+    border-left: 4px solid #667eea;
     transition: all 0.3s ease;
     border: 1px solid rgba(102, 126, 234, 0.15);
 }
 
 .achievement-item:hover {
-    background: rgba(102, 126, 234, 0.15);
-    transform: translateX(5px);
+    background: rgba(102, 126, 234, 0.12);
+    transform: translateX(4px);
+}
+
+.award-name {
+    font-weight: 600;
+    color: #2d3748;
+    font-size: 1rem;
+    margin-bottom: 4px;
+}
+
+.award-work {
+    color: #4a5568;
+    font-size: 0.95rem;
+    margin-bottom: 6px;
+}
+
+.award-prize {
+    color: #667eea;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: 4px;
+}
+
+.award-prize i {
+    margin-right: 6px;
+}
+
+.award-date {
+    font-size: 0.85rem;
+    color: #718096;
+}
+
+.award-date i {
+    margin-right: 6px;
 }
 
 .download-btn {
@@ -315,5 +383,98 @@ h1 {
         animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
+    }
+}
+
+/* ========== PDF/인쇄 최적화 ========== */
+@media print {
+    body {
+        background: #fff !important;
+        color: #2d3748 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .container {
+        max-width: 100%;
+        padding: 0;
+        gap: 20px;
+        animation: none;
+    }
+
+    .sidebar,
+    .main-content {
+        background: #fff !important;
+        box-shadow: none !important;
+        backdrop-filter: none !important;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        overflow: visible;
+    }
+
+    .sidebar {
+        position: relative;
+        top: 0;
+        page-break-inside: avoid;
+    }
+
+    .main-content {
+        page-break-inside: avoid;
+        overflow: visible;
+    }
+
+    /* 인쇄 시 다운로드 버튼 숨김 */
+    .download-btn {
+        display: none !important;
+    }
+
+    /* 카드/섹션이 페이지 중간에서 잘리지 않도록 */
+    .section {
+        page-break-inside: avoid;
+    }
+
+    /* backdrop-filter 제거 + 불투명 배경: 인쇄 시 내용이 비는 현상 방지 */
+    .experience-item,
+    .project-item,
+    .achievement-item {
+        background: #f8fafc !important;
+        box-shadow: none;
+        border: 1px solid #e2e8f0;
+        page-break-inside: avoid;
+        backdrop-filter: none !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    /* 인쇄 시 텍스트·제목 색 명시 (일부 브라우저 대비) */
+    .main-content .job-title,
+    .main-content .company,
+    .main-content .duration,
+    .main-content p,
+    .main-content li,
+    .main-content .award-name,
+    .main-content .award-work,
+    .main-content .award-prize,
+    .main-content .award-date {
+        color: #2d3748 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .main-content .job-title {
+        color: #5a67d8 !important;
+    }
+
+    /* 스킬 바·테그 등 배경색이 인쇄에 나오도록 */
+    .skill-fill,
+    .tech-tag,
+    .project-link--url {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    /* 링크 URL이 인쇄물에 보이도록 (일부 브라우저) */
+    a[href].project-link--url::after {
+        content: "";
     }
 }
